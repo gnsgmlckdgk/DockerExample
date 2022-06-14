@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    ports:
+      - 60000:3306
+    volumes:
+      - "./db/mariadb/data:/var/lib/mysql"
+    environment:
+      MARIADB_ROOT_PASSWORD: 1q2w3e4r
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 60001:8080
+
+  server:
+    build:
+      context: ./server
+    restart: always
+    ports:
+      - 60002:18080
+    volumes:
+      - "./server/home:/root"
+    # docker run -it 역할
+    # 할당된 표준 입력으로 실행되도록 서비스 컨테이너를 구성
+    stdin_open: true
+    # TTY와 함께 실행되도록 서비스 컨테이너를 구성
+    tty: true
+    # 환경변수 설정
+    environment:
+        - UPBIT_OPEN_API_ACCESS_KEY=엑세스키입력
+        - UPBIT_OPEN_API_SECRET_KEY=시크릿키입력
