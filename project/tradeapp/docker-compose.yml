@@ -32,5 +32,5 @@ services:
     tty: true
     # 환경변수 설정
     environment:
-        - UPBIT_OPEN_API_ACCESS_KEY=엑세스키입력
-        - UPBIT_OPEN_API_SECRET_KEY=시크릿키입력
+        - UPBIT_OPEN_API_ACCESS_KEY=엑세스키
+        - UPBIT_OPEN_API_SECRET_KEY=시크릿키
