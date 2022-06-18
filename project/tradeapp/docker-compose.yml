@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-  db:
-    image: mariadb
+  mariadb:
+    image: mariadb:latest
     restart: always
     ports:
       # host 컴퓨터에서는 왼쪽 port로 접속해야하고 같은 네트워크 상의 컨테이너 끼리는 오른쪽 포트로 접근해야한다.
@@ -10,7 +10,10 @@ services:
     volumes:
       - "./db/mariadb/data:/var/lib/mysql"
     environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${UPBIT_OPEN_API_LOCAL_DB_PASSWORD}
+      MYSQL_DATABASE: trade
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${UPBIT_OPEN_API_LOCAL_DB_PASSWORD}
 
   adminer:
     image: adminer
@@ -19,13 +22,16 @@ services:
       - 60001:8080
 
   server:
+    depends_on:
+       - mariadb
     build:
       context: ./server
     restart: always
     ports:
       - 60002:18080
     volumes:
-      - "./server/home:/root"
+      # - "./server/home:/root"
+      - ${TARGET_PATH}:/root
     # docker run -it 역할
     # 할당된 표준 입력으로 실행되도록 서비스 컨테이너를 구성
     stdin_open: true
@@ -35,9 +41,7 @@ services:
     environment:
       - UPBIT_OPEN_API_ACCESS_KEY=${UPBIT_OPEN_API_ACCESS_KEY}
       - UPBIT_OPEN_API_SECRET_KEY=${UPBIT_OPEN_API_SECRET_KEY}
-    # networks:
-    #   - default
-    #   - our_net
+      - UPBIT_OPEN_API_LOCAL_DB_PASSWORD=${UPBIT_OPEN_API_LOCAL_DB_PASSWORD}
 
 networks:
   default:
