@@ -5,7 +5,8 @@ services:
     image: mariadb
     restart: always
     ports:
-      - 60000:3306
+      # host 컴퓨터에서는 왼쪽 port로 접속해야하고 같은 네트워크 상의 컨테이너 끼리는 오른쪽 포트로 접근해야한다.
+      - 3306:3306
     volumes:
       - "./db/mariadb/data:/var/lib/mysql"
     environment:
@@ -32,5 +33,13 @@ services:
     tty: true
     # 환경변수 설정
     environment:
-        - UPBIT_OPEN_API_ACCESS_KEY=${UPBIT_OPEN_API_ACCESS_KEY}
-        - UPBIT_OPEN_API_SECRET_KEY=${UPBIT_OPEN_API_SECRET_KEY}
+      - UPBIT_OPEN_API_ACCESS_KEY=${UPBIT_OPEN_API_ACCESS_KEY}
+      - UPBIT_OPEN_API_SECRET_KEY=${UPBIT_OPEN_API_SECRET_KEY}
+    # networks:
+    #   - default
+    #   - our_net
+
+networks:
+  default:
+    external:
+      name: our_net

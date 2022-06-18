@@ -18,3 +18,11 @@ ls
 echo $UPBIT_OPEN_API_ACCESS_KEY
 echo $UPBIT_OPEN_API_SECRET_KEY
 exit
+ls
+ll
+ls -al
+ifconfig
+dnf update
+dnf install net-tools
+ifconfig
+exit
