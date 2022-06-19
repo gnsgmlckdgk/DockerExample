@@ -2,18 +2,30 @@ version: '3.1'
 
 services:
   mariadb:
+    container_name: mariadb
     image: mariadb:latest
     restart: always
     ports:
       # host 컴퓨터에서는 왼쪽 port로 접속해야하고 같은 네트워크 상의 컨테이너 끼리는 오른쪽 포트로 접근해야한다.
       - 3306:3306
     volumes:
+      # DB데이터저장
       - "./db/mariadb/data:/var/lib/mysql"
+      # 설정파일
+      - "./db/mariadb/config:/etc/mysql/conf.d"
     environment:
       MYSQL_ROOT_PASSWORD: ${API_DB_PASSWORD}
       MYSQL_DATABASE: trade
       MYSQL_USER: root
       MYSQL_PASSWORD: ${API_DB_PASSWORD}
+      # 컨테이너 내의 시스템 타임존을 우리나라에 맞게 설정
+      TZ: Asia/Seoul
+    command: 
+      # config파일 권한설정
+      - chmod 644 /etc/mysql/conf.d
+      # 이 명령어를 사용하지 않으면, 일부 설정이 latin으로 설정됨
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
 
   adminer:
     image: adminer
