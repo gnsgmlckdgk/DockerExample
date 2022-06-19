@@ -10,10 +10,10 @@ services:
     volumes:
       - "./db/mariadb/data:/var/lib/mysql"
     environment:
-      MYSQL_ROOT_PASSWORD: ${UPBIT_OPEN_API_LOCAL_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${API_DB_PASSWORD}
       MYSQL_DATABASE: trade
       MYSQL_USER: root
-      MYSQL_PASSWORD: ${UPBIT_OPEN_API_LOCAL_DB_PASSWORD}
+      MYSQL_PASSWORD: ${API_DB_PASSWORD}
 
   adminer:
     image: adminer
@@ -39,9 +39,10 @@ services:
     tty: true
     # 환경변수 설정
     environment:
-      - UPBIT_OPEN_API_ACCESS_KEY=${UPBIT_OPEN_API_ACCESS_KEY}
-      - UPBIT_OPEN_API_SECRET_KEY=${UPBIT_OPEN_API_SECRET_KEY}
-      - UPBIT_OPEN_API_LOCAL_DB_PASSWORD=${UPBIT_OPEN_API_LOCAL_DB_PASSWORD}
+      - UPBIT_OPEN_API_ACCESS_KEY=${API_ACCESS_KEY}
+      - UPBIT_OPEN_API_SECRET_KEY=${API_SECRET_KEY}
+      - UPBIT_OPEN_API_LOCAL_DB_PASSWORD=${API_DB_PASSWORD}
+      - UPBIT_OPEN_API_DB_URL=${API_DB_URL}
 
 networks:
   default:
